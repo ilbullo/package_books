@@ -1,0 +1,12 @@
+{
+    "name": "ilbullo/books",
+    "description": "Handle an ebook library",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Marco",
+            "email": "ilbullo@gmail.com"
+        }
+    ],
+    "require": {}
+}
