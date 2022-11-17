@@ -27,10 +27,10 @@ class BookServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         // load views of the package
-        $this->loadViewsFrom(__DIR__.'/../views','book');
+        $this->loadViewsFrom(__DIR__.'/../views','books');
 
         //merge configuration file of the package with the one of the project
-        $this->mergeConfigFrom(__DIR__ .'/../config/book.php','book');
+        $this->mergeConfigFrom(__DIR__ .'/../config/book.php','books');
 
         //load automatically migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
