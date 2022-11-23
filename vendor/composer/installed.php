@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2104508aafcbecff0b2f0b3fd218559d9571813b',
+    'reference' => '62fdd795e98ee1121acc98a717ef4d78f1275017',
     'name' => 'ilbullo/books',
   ),
   'versions' => 
@@ -27,7 +27,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2104508aafcbecff0b2f0b3fd218559d9571813b',
+      'reference' => '62fdd795e98ee1121acc98a717ef4d78f1275017',
     ),
     'myclabs/deep-copy' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'phpunit/php-code-coverage' => 
     array (
-      'pretty_version' => '9.2.18',
-      'version' => '9.2.18.0',
+      'pretty_version' => '9.2.19',
+      'version' => '9.2.19.0',
       'aliases' => 
       array (
       ),
-      'reference' => '12fddc491826940cf9b7e88ad9664cf51f0f6d0a',
+      'reference' => 'c77b56b63e3d2031bd8997fcec43c1925ae46559',
     ),
     'phpunit/php-file-iterator' => 
     array (

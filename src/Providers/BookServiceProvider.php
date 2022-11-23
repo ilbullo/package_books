@@ -13,7 +13,8 @@ class BookServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //$this->mergeConfigFrom(__DIR__.'/../config/book.php', 'books');
+
     }
 
     /**
@@ -34,6 +35,15 @@ class BookServiceProvider extends ServiceProvider
 
         //load automatically migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        if ($this->app->runningInConsole()) {
+
+            $this->publishes([
+              __DIR__.'/../config/book.php' => config_path('books.php'),
+            ], 'config');
+
+          }
+
 
     }
 }

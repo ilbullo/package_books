@@ -18,6 +18,7 @@ class ComposerStaticInit78a9d2967ac52b3d7615f222ae09849a
         ),
         'I' => 
         array (
+            'Ilbullo\\Books\\Database\\Factories\\' => 33,
             'Ilbullo\\Books\\' => 14,
         ),
         'D' => 
@@ -31,6 +32,10 @@ class ComposerStaticInit78a9d2967ac52b3d7615f222ae09849a
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Ilbullo\\Books\\Database\\Factories\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/database/factories',
         ),
         'Ilbullo\\Books\\' => 
         array (
