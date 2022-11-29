@@ -2,7 +2,12 @@
 
 namespace Ilbullo\Books\Providers;
 
+use Ilbullo\Books\Http\Livewire\{Bookshelf, Authors, Categories};
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\View\Compilers\BladeCompiler;
+use Livewire;
 
 class BookServiceProvider extends ServiceProvider
 {
@@ -13,7 +18,22 @@ class BookServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->mergeConfigFrom(__DIR__.'/../config/book.php', 'books');
+
+        //merge configuration file of the package with the one of the project
+        $this->mergeConfigFrom(__DIR__ .'/../config/book.php','books');
+
+        /**************************************
+         * Load all Eloquent Query macros
+         * from files into Macro directory
+         **************************************/
+
+        Collection::make(glob(__DIR__.'/../Macro/*.php'))
+            ->mapWithKeys(function ($path) {
+                return [$path => pathinfo($path, PATHINFO_FILENAME)];
+            })
+            ->each(function ($macro, $path) {
+                require_once $path;
+            });
 
     }
 
@@ -30,11 +50,11 @@ class BookServiceProvider extends ServiceProvider
         // load views of the package
         $this->loadViewsFrom(__DIR__.'/../views','books');
 
-        //merge configuration file of the package with the one of the project
-        $this->mergeConfigFrom(__DIR__ .'/../config/book.php','books');
-
         //load automatically migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        //load automatically translation
+        $this->loadJsonTranslationsFrom(__DIR__ .'/../lang');
 
         if ($this->app->runningInConsole()) {
 
@@ -43,7 +63,24 @@ class BookServiceProvider extends ServiceProvider
             ], 'config');
 
           }
+          //Load livewire components
+          Livewire::component('bookshelf', Bookshelf::class);
+          Livewire::component('authors', Authors::class);
+          Livewire::component('categories', Categories::class);
+          $this->configureComponents();
 
+    }
 
+    protected function configureComponents()
+    {
+		$this->callAfterResolving(BladeCompiler::class, function () {
+			$this->registerComponent('delete-confirm');
+			// Register other components here
+		});
+	}
+
+    protected function registerComponent(string $component)
+    {
+        Blade::component('books::layout.components.'.$component, 'books-'.$component);
     }
 }

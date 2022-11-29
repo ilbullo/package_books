@@ -1,1 +1,4 @@
-<h1>TEST PACKAGE</h1>
+@extends('books::layout.book')
+@section('content')
+<livewire:bookshelf />
+@endsection

@@ -2,16 +2,11 @@
 
 namespace Ilbullo\Books\Http\Controllers;
 
-use \Ilbullo\Books\Models\Book;
-use Ilbullo\Books\Models\Category;
+use Illuminate\Http\Request;
 
-class BookController extends Controller {
-
+class BookController extends Controller
+{
     public function index() {
-
-        $book = Book::all();
-        $category = Category::all()->first();
-        dd($category->books);
-        return view('books::books.index', ['books' => $book]);
+        return view('books::books.index');
     }
 }

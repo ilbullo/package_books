@@ -1,3 +1,6 @@
 <?php
 
-return [];
+return [
+    'layout' => 'books::layout.book',
+    'locale'          => 'it'
+];

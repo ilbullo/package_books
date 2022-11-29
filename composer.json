@@ -23,6 +23,8 @@
                 "Ilbullo\\Books\\Providers\\BookServiceProvider"
             ]
         }
+    },
+    "require": {
+        "livewire/livewire": "^2.10"
     }
-
 }

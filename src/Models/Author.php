@@ -26,4 +26,9 @@ class Author extends Model
         return $this->hasMany(Book::class);
 
     }
+
+    public function getFullNameAttribute() {
+
+        return $this->lastname . " " . $this->name;
+    }
 }
