@@ -5,6 +5,7 @@ use Ilbullo\Books\Http\Controllers\BookController;
 use Ilbullo\Books\Http\Livewire\Authors;
 use Ilbullo\Books\Http\Livewire\Categories;
 use Ilbullo\Books\Http\Livewire\Books;
+use Ilbullo\Books\Models\Book;
 use Illuminate\Support\Facades\Route;
 
 Route::group(
@@ -15,6 +16,17 @@ Route::group(
         Route::get('books',[BookController::class,'index'])->name('ilbullo.books.books.index');
         Route::get('authors',Authors::class)->name('ilbullo.books.authors');
         Route::get('categories',Categories::class)->name('ilbullo.books.categories');
+
+        Route::get('loadCat', function() {
+
+            $books = \Ilbullo\Books\Models\Book::where('author_id',96)->get();
+            foreach($books as $book) {
+                $category = new \Ilbullo\Books\Models\BookCategory();
+                $category->book_id = $book->id;
+                $category->category_id = 2;
+                $category->save();
+            }
+        });
 
         Route::get('loader', function() {
 

@@ -39,5 +39,6 @@
 "New book"                      : "Nuovo libro",
 "Load Book"                     : "Carica libro",
 "Delete file"                   : "Cancella il link al libro",
-"Book file deleted"             : "Link al libro cancellato correttamente"
+"Book file deleted"             : "Link al libro cancellato correttamente",
+"Edit"                          : "Modifica"
 }
