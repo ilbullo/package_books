@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /*****  TEST DATA!!
+        /*****  TEST DATA!! ***/
         Author::factory(10)->create();
         Category::factory(10)->create();
 
@@ -31,31 +31,7 @@ class DatabaseSeeder extends Seeder
         foreach(Book::all() as $book) {
             BookCategory::factory(\random_int(1,6))->create(['book_id' => $book->id,'category_id' => Category::inRandomOrder()->first()]);
         }
-        ***/
-
-        // REAL BOOK CATEGORIES
-        $categories = [
-            'biografia',
-            'romanzo storico',
-            'giallo',
-            'thriller',
-            'avventura e azione',
-            'fantascienza',
-            'distopia',
-            'fantasy',
-            'horror',
-            'young adult',
-            'romanzo di formazione',
-            'umoristico',
-            'finanza',
-            'informatica'
-        ];
-
-        foreach($categories as $cat) {
-            \Ilbullo\Books\Models\Category::create([
-                'name'  => $cat
-            ]);
-        }
+        /** END TEST DATA ***/
 
     }
 }
