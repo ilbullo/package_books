@@ -43,7 +43,7 @@
                     </thead>
                     <tbody>
                         @foreach ($books as $book)
-                            <x:books::book :book="$book" />
+                            <x:books::book :book="$book" :edit="true" />
                         @endforeach
                     </tbody>
                 </table>

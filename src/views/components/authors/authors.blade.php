@@ -58,7 +58,7 @@
                         <th></th>
                     </tr>
                     @foreach($author_details->books as $book)
-                        <x:books::book :book="$book" />
+                        <x:books::book :book="$book" :edit="false" />
                     @endforeach
                 </table>
 
