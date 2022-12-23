@@ -2,7 +2,7 @@
 
 namespace Ilbullo\Books\Providers;
 
-use Ilbullo\Books\Http\Livewire\{Bookshelf, Authors, Categories};
+use Ilbullo\Books\Http\Livewire\{Bookshelf, Authors, Book, Categories};
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
@@ -67,6 +67,7 @@ class BookServiceProvider extends ServiceProvider
           Livewire::component('bookshelf', Bookshelf::class);
           Livewire::component('authors', Authors::class);
           Livewire::component('categories', Categories::class);
+          Livewire::component('book', Book::class);
           $this->configureComponents();
 
     }

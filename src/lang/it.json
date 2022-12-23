@@ -29,5 +29,15 @@
 "Category Updated Successfully"   : "Categoria aggiornata con successo",
 "Category Created Successfully"   : "Categoria aggiunta con successo",
 "Filter by"                     : "Filtra per",
-"Processing search"             : "Ricerca in corso"
+"Processing search"             : "Ricerca in corso",
+"Select an author"              : "Scegli un autore",
+"Title"                         : "Titolo",
+"Enter Title"                   : "Inserisci il titolo",
+"Add book"                      : "Aggiungi libro",
+"Yes"                           : "Si",
+"Actions"                       : "Azioni",
+"New book"                      : "Nuovo libro",
+"Load Book"                     : "Carica libro",
+"Delete file"                   : "Cancella il link al libro",
+"Book file deleted"             : "Link al libro cancellato correttamente"
 }

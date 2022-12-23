@@ -35,6 +35,7 @@
                             <td>{{ $author->lastname }}</td>
                             <td>{{ $author->name }}</td>
                             <td>
+                                <button class="btn btn-outline-primary btn-sm" wire:click="loadAuthor({{$author->id}})"><i class="fa-solid fa-book"></i></button>
                                 <button data-bs-toggle="modal" data-bs-target="#UpdateAuthorModal"
                                     wire:click="edit({{ $author->id }})" class="btn btn-outline-primary btn-sm"
                                     title="{{ __('Edit') }}"><i class="fa-regular fa-pen-to-square"></i></button>
@@ -47,7 +48,21 @@
             {{ $items->links() }}
         </div>
         <div class="col-4">
-            <h2>Scheda autore</h2>
+            @if($author_details)
+                <h2>{{ $author_details->fullName}}</h2>
+                <table class="table table-condensed table-bordered">
+                    <tr>
+                        <th>{{__('Book Title')}}</th>
+                        <th>{{ __('Author')}}</th>
+                        <th>{{ __('Categories') }}</th>
+                        <th></th>
+                    </tr>
+                    @foreach($author_details->books as $book)
+                        <x:books::book :book="$book" />
+                    @endforeach
+                </table>
+
+            @endif
         </div>
     </div>
 

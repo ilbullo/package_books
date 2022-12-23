@@ -41,6 +41,19 @@ class Authors extends Component
 
     public $search = "";
 
+    public $author_details = null;
+
+    /***********************************************************
+     * Reset form fields and validation errors every time
+     * the component is rendered
+     * @return void
+     **********************************************************/
+
+    public function hydrate() {
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
     /***********************************************************
      * Render component as a list of elements
      * @return View
@@ -88,16 +101,11 @@ class Authors extends Component
 
         $this->formValidator();
 
-        $item = $this->model::create(
-            [
-                'name'      => $this->form['name'],
-                'lastname'  => $this->form['lastname']
-            ]);
+        $item = $this->model::create($this->getData());
 
         session()->flash('message', __($this->messages['create']));
         session()->flash('type', 'success');
 
-        //reset fields
         $this->resetInputFields();
         $this->emit('authorStore');
     }
@@ -113,12 +121,9 @@ class Authors extends Component
 
         if ($this->form['author_id']) {
 
-            $user = $this->model::find($this->form['author_id']);
+            $author = $this->model::find($this->form['author_id']);
 
-            $user->update([
-                'name'     => $this->form['name'],
-                'lastname' => $this->form['lastname'],
-            ]);
+            $author->update($this->getData());
 
             $this->updateMode = false;
             session()->flash('message', $this->messages['update']);
@@ -152,6 +157,9 @@ class Authors extends Component
         }
     }
 
+    public function loadAuthor($id) {
+        $this->author_details = $this->model::find($id);
+    }
 
     /***********************************************************
      * Reset all input fields of the form
@@ -176,5 +184,17 @@ class Authors extends Component
                 'form.name.required'     => __('This field is required'),
                 'form.lastname.required' => __('This field is required')
             ]);
+    }
+
+    /**
+     * Return an array of data to update or create
+     * @return array
+     */
+
+    private function getData() : array {
+        return [
+            'name'     => $this->form['name'],
+            'lastname' => $this->form['lastname'],
+        ];
     }
 }

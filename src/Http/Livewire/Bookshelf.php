@@ -24,6 +24,8 @@ class Bookshelf extends Component
 
     public $categories = [];
 
+    protected $listeners = ['updateBookShelf' =>'render'];
+
     public function mount() {
 
         $this->authors = Author::orderBy('lastname')->get();

@@ -9,24 +9,18 @@ use Ilbullo\Books\Models\Book;
 use Ilbullo\Books\Models\BookCategory;
 use Ilbullo\Books\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Auth;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     * TO RUN SEEDER: php artisan db:seed --class=Ilbullo\\Books\\Database\\Seeders\\DatabaseSeeder
      *
      * @return void
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
+        /*****  TEST DATA!!
         Author::factory(10)->create();
         Category::factory(10)->create();
 
@@ -36,6 +30,31 @@ class DatabaseSeeder extends Seeder
 
         foreach(Book::all() as $book) {
             BookCategory::factory(\random_int(1,6))->create(['book_id' => $book->id,'category_id' => Category::inRandomOrder()->first()]);
+        }
+        ***/
+
+        // REAL BOOK CATEGORIES
+        $categories = [
+            'biografia',
+            'romanzo storico',
+            'giallo',
+            'thriller',
+            'avventura e azione',
+            'fantascienza',
+            'distopia',
+            'fantasy',
+            'horror',
+            'young adult',
+            'romanzo di formazione',
+            'umoristico',
+            'finanza',
+            'informatica'
+        ];
+
+        foreach($categories as $cat) {
+            \Ilbullo\Books\Models\Category::create([
+                'name'  => $cat
+            ]);
         }
 
     }

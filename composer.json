@@ -14,7 +14,8 @@
     "autoload": {
         "psr-4": {
           "Ilbullo\\Books\\": "src",
-          "Ilbullo\\Books\\Database\\Factories\\": "database/factories"
+          "Ilbullo\\Books\\Database\\Factories\\": "database/factories",
+          "Ilbullo\\Books\\Database\\Seeders\\": "database/seeders"
         }
       },
       "extra": {

@@ -10,7 +10,9 @@ class Book extends Model
 
     protected $fillable = [
         'title',
-        'author_id'
+        'author_id',
+        'path',
+        'filetype'
     ];
 
     /***************************************************
