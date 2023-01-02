@@ -23,3 +23,31 @@ Change filesystem disk on ENV file to book
 
 `FILESYSTEM_DISK=book`
 
+Create .htaccess file with the code below to remove "public" from URL
+
+```
+<IfModule mod_rewrite.c>     
+    <IfModule mod_negotiation.c>         
+        Options -MultiViews -Indexes     
+    </IfModule>
+    RewriteEngine On
+
+    # Handle Authorization MemberHeader
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Remove public URL from the path
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+```
+
