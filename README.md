@@ -18,3 +18,8 @@ Than load migrations with the artisan command to generate the tables on database
 Create the storage link using artisan command
 
 `php artisan storage:link`
+
+Change filesystem disk on ENV file to book
+
+`FILESYSTEM_DISK=book`
+

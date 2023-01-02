@@ -22,6 +22,23 @@ class BookServiceProvider extends ServiceProvider
         //merge configuration file of the package with the one of the project
         $this->mergeConfigFrom(__DIR__ .'/../config/book.php','books');
 
+        //set my custom filesystem to store books
+        $this->app->config['filesystems.disks.book'] = [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+            'throw' => false,
+            'permissions' => [
+                'file' => [
+                    'public' => 0644,
+                    'private' => 0644,
+                ],
+                'dir' => [
+                    'public' => 0755,
+                    'private' => 0755,
+                ],
+            ],
+        ];
+
         /**************************************
          * Load all Eloquent Query macros
          * from files into Macro directory
