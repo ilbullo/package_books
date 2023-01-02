@@ -15,6 +15,8 @@ class Authors extends Component
 
     protected $model = Author::class;
 
+    protected const ITEMS_PER_PAGE = 20;   //set how many rows per paginated page
+
     public $updateMode = false;
 
     //form elements
@@ -50,8 +52,10 @@ class Authors extends Component
      **********************************************************/
 
     public function hydrate() {
+
         $this->resetErrorBag();
         $this->resetValidation();
+
     }
 
     /***********************************************************
@@ -61,7 +65,9 @@ class Authors extends Component
 
     public function render()
     {
-        $items = $this->model::whereLike(['name','lastname'],$this->search)->paginate(15);
+        $items = $this->model::whereLike(['name','lastname'],$this->search)
+                             ->paginate(self::ITEMS_PER_PAGE);
+
         return view('books::components.authors.authors', ['items' => $items])->extends(config('books.layout'));
     }
 
@@ -87,8 +93,10 @@ class Authors extends Component
 
     public function cancel()
     {
+
         $this->updateMode = false;
         $this->resetInputFields();
+
     }
 
     /**********************************************************
@@ -135,7 +143,7 @@ class Authors extends Component
     }
 
     /***********************************************************
-     * Put in the bin an element
+     * Delete an element
      * @param Int $id
      * @return void
      **********************************************************/
@@ -145,17 +153,27 @@ class Authors extends Component
         if ($id) {
 
             try {
-                $this->model::find($id)->delete();
 
+                $this->model::find($id)->delete();
                 session()->flash('message', $this->messages['delete']);
                 session()->flash('type', 'success');
+
             } catch (\Exception $e) {
+
                 session()->flash('message', $this->messsages['errror']);
                 session()->flash('type', 'danger');
                 Log::error("Errore cancellazione autore: " . $e->getMessage());
+
             }
         }
     }
+
+    /***********************************************************
+     * Get infos about a specific author and set its on
+     * param author_details
+     * @param Int $id
+     * @return void
+     **********************************************************/
 
     public function loadAuthor($id) {
         $this->author_details = $this->model::find($id);
@@ -186,10 +204,10 @@ class Authors extends Component
             ]);
     }
 
-    /**
+    /***********************************************************
      * Return an array of data to update or create
      * @return array
-     */
+     ***********************************************************/
 
     private function getData() : array {
         return [

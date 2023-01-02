@@ -68,9 +68,15 @@ class BookServiceProvider extends ServiceProvider
           Livewire::component('authors', Authors::class);
           Livewire::component('categories', Categories::class);
           Livewire::component('book', Book::class);
+
           $this->configureComponents();
 
     }
+
+    /*****************************************************
+     * Register all custom blade components
+     * @return void
+     *****************************************************/
 
     protected function configureComponents()
     {
@@ -79,6 +85,11 @@ class BookServiceProvider extends ServiceProvider
 			// Register other components here
 		});
 	}
+
+    /*****************************************************
+     * Register new blade component
+     * @return void
+     *****************************************************/
 
     protected function registerComponent(string $component)
     {

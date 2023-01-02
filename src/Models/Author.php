@@ -17,7 +17,7 @@ class Author extends Model
      *
      * Get the books of the author
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      *
      ***************************************************/
 
@@ -27,7 +27,15 @@ class Author extends Model
 
     }
 
-    public function getFullNameAttribute() {
+    /***************************************************
+     *
+     * Get the full name of the author. Lastname + name
+     *
+     * @return String
+     *
+     ***************************************************/
+
+    public function getFullNameAttribute() : string {
 
         return $this->lastname . " " . $this->name;
     }

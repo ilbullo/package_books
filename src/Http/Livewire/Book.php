@@ -2,6 +2,7 @@
 
 namespace Ilbullo\Books\Http\Livewire;
 
+use Exception;
 use Ilbullo\Books\Models\{Author, Book as BookModel, Category};
 use Illuminate\Support\Facades\File;
 use Livewire\Component;
@@ -20,6 +21,7 @@ class Book extends Component
         'author_id' => '',
         'title'     => '',
         'path'      => '',
+        'filetype'  => '',
         'categories'=> []
     ];
 
@@ -28,12 +30,13 @@ class Book extends Component
         'delete'    => 'Book Deleted Successfully',
         'update'    => 'Book Updated Successfully',
         'create'    => 'Book Created Successfully',
-        'error'     => 'Something wrong on request'
+        'error'     => 'Something wrong on request',
+        'error_file'=> 'Can\'t delete file',
     ];
 
     public $modalLabels = [
         'create'    => 'New book',
-        'update'    => 'Update update'
+        'update'    => 'Update book'
     ];
 
     protected $model = BookModel::class;
@@ -56,6 +59,11 @@ class Book extends Component
         $this->resetValidation();
 
     }
+
+    /***********************************************************
+     * Render component
+     * @return View
+     **********************************************************/
 
     public function render() {
         return view('books::components.book.book',[
@@ -85,11 +93,13 @@ class Book extends Component
 
         $this->formValidator();
 
+        //store file
+        $this->form['path']->storeAs(BookLink::storeLink($this->form['author_id']) , $this->getFileName());
+
+        //create an save book
         $item = $this->model::create($this->getData());
         $item->categories()->sync($this->form['categories']);
-        $item->filetype = $this->form['path']->getExtension();
         $item->save();
-        $this->form['path']->storeAs(BookLink::storeLink($this->form['author_id']) , $this->getFileName());
 
         session()->flash('message', __($this->messages['create']));
         session()->flash('type', 'success');
@@ -116,6 +126,7 @@ class Book extends Component
          $this->form['title']       = $book->title;
          $this->form['author_id']   = $book->author_id;
          $this->form['path']        = $book->path;
+         $this->form['filetype']    = $book->filetype;
          $this->form['categories']  = $book->categories->pluck('id')->toArray();
      }
 
@@ -127,16 +138,68 @@ class Book extends Component
 
      public function deleteFile() {
 
-        File::delete(BookLink::path($this->form['author_id'],$this->form['path']));
+        try {
+        $this->removeFile($this->form['author_id'], $this->form['path']);
         $this->form['path'] = '';
         $this->model::where('id',$this->form['book_id'])
                     ->update(['path' => $this->form['path']]);
 
         session()->flash('message', __('Book file deleted'));
         session()->flash('type', 'success');
+        }
+        catch (Exception $e) {
+            session()->flash('message', $this->messsages['error_file']);
+            session()->flash('type', 'danger');
+            Log::error("Errore cancellazione file: " . $e->getMessage());
+        }
      }
 
-         /***********************************************************
+     /****************************************************
+      * Remove file from folder
+      * @param Int $author is the author ID
+      * @param String $path is path of the file
+      * @return bool
+      *
+      ***************************************************/
+
+     private function removeFile($author, $path) : bool {
+
+        return File::delete(BookLink::path($author,$path));
+     }
+
+     /***********************************************************
+     * Delete an element
+     * @param Int $id
+     * @return void
+     **********************************************************/
+
+    public function delete($id)
+    {
+        if ($id) {
+
+            try {
+
+                $itemToDelete = $this->model::find($id);
+
+                //remove file
+                $this->removeFile($itemToDelete->author_id, $itemToDelete->path);
+                //delete element
+                $itemToDelete->delete();
+
+                session()->flash('message', $this->messages['delete']);
+                session()->flash('type', 'success');
+
+            } catch (\Exception $e) {
+
+                session()->flash('message', $this->messsages['error']);
+                session()->flash('type', 'danger');
+                Log::error("Errore cancellazione libro: " . $e->getMessage());
+
+            }
+        }
+    }
+
+    /***********************************************************
      * Update an element after validation pass
      * @return void
      **********************************************************/
@@ -153,26 +216,15 @@ class Book extends Component
             //check if there is a new uploaded file and store it
             if (is_object($this->form['path'])) {
 
-                $item->filetype = $this->form['path']->getExtension();
-                $this->form['path']->storeAs(BookLink::storeLink($this->form['author_id']), $this->getFileName());
+                $this->storeBookFile();
 
             }
 
              //move or change filename if are changed author or book_title
-
              if ($item->author_id != $this->form['author_id'] || $item->title != $this->form['title']){
 
-                //get the new path from the author_id and book title
-                $newPath = Str::replace( Str::before($item->path,'.') , $this->form['title'] , $item->path);
+                $this->moveBookFile($item);
 
-                //update file path from old position to new
-                File::move(
-                    BookLink::path($item->author_id, $item->path),
-                    BookLink::path($this->form['author_id'],$newPath)
-                    );
-
-                //update path with new filename
-                $this->form['path'] = $newPath;
             }
 
             $item->save();
@@ -202,6 +254,7 @@ class Book extends Component
 
     /***********************************************************
      * Validate form inputs
+     * @return array
      ***********************************************************/
 
     private function formValidator() {
@@ -209,20 +262,23 @@ class Book extends Component
         return $this->validate([
                 'form.title'     => 'required|string',
                 'form.author_id' => 'required|int',
-                'form.path'      => 'required'
+                'form.path'      => 'required',
+                'form.categories'=> 'required'
             ],
             [
                 'form.title.required'     => __('This field is required'),
                 'form.author_id.required' => __('This field is required'),
                 'form.path.required'      => __('This field is required'),
-                'form.path.unique'        => __('A book with this title already exists')
+                'form.path.unique'        => __('A book with this title already exists'),
+                'form.categories.required'=> __('This field is required')
+
             ]);
     }
 
-    /**
+    /***********************************************************
      * Return an array of data to update or create
      * @return array
-     */
+     ***********************************************************/
 
     private function getData() : array {
 
@@ -230,17 +286,52 @@ class Book extends Component
             'title'     => $this->form['title'],
             'author_id' => $this->form['author_id'],
             'path'      => empty($this->form['path']) ? '' : (is_object($this->form['path']) ? $this->getFileName() : $this->form['path']),
-            'categories'=> $this->form['categories']
+            'categories'=> $this->form['categories'],
+            'filetype'  => $this->form['filetype']
         ];
     }
 
-    /**
+    /***********************************************************
      * Return the name of the uploaded file i want to save
      * format: titleOfBook.extensionOfFile
      * @return String
-     */
+     ***********************************************************/
 
     private function getFileName() : string {
         return Str::slug($this->form['title']) . "." . $this->form['path']->getClientOriginalExtension();
+    }
+
+    /**********************************************************
+     * Move and rename file of a specific book item
+     * @param Ilbullo\Books\Models\Book $item
+     * @return void
+     **********************************************************/
+
+    private function moveBookFile($item) {
+
+        //get the new path from the author_id and book title
+        $newPath = Str::replace( Str::before($item->path,'.') , $this->form['title'] , $item->path);
+
+        //update file path from old position to newPath
+        File::move(
+            BookLink::path($item->author_id, $item->path),
+            BookLink::path($this->form['author_id'],$newPath)
+            );
+
+        //update form element path with new filename
+        $this->form['path']     = $newPath;
+
+    }
+
+    /**********************************************************
+     * Store file of specific item
+     * @return void
+     **********************************************************/
+
+    private function storeBookFile() {
+
+        $this->form['filetype'] = $this->form['path']->getClientOriginalExtension();
+        $this->form['path']->storeAs(BookLink::storeLink($this->form['author_id']), $this->getFileName());
+
     }
 }

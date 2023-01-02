@@ -14,6 +14,8 @@ class Bookshelf extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    protected const ITEMS_PER_PAGE = 20;   //set how many rows per paginated page
+
     public $search = null;
 
     public $authorsFilter = [];
@@ -26,12 +28,22 @@ class Bookshelf extends Component
 
     protected $listeners = ['updateBookShelf' =>'render'];
 
+    /***********************************************************
+     * Set authors and categories used on select and checkboxes
+     * @return View
+     **********************************************************/
+
     public function mount() {
 
         $this->authors = Author::orderBy('lastname')->get();
         $this->categories = Category::orderBy('name')->get();
 
     }
+
+    /***********************************************************
+     * Render component as a list of elements
+     * @return View
+     **********************************************************/
 
     public function render()
     {
@@ -51,7 +63,7 @@ class Bookshelf extends Component
                         });
                     }
                 })
-                ->paginate(20);
+                ->paginate(self::ITEMS_PER_PAGE);
 
         return view('books::components.bookshelf',['books' => $books])->extends(config('books.layout'));
     }

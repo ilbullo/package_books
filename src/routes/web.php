@@ -13,6 +13,7 @@ Route::group(
         'middleware' => "web"
     ],
     function () {
+
         Route::get('books',[BookController::class,'index'])->name('ilbullo.books.books.index');
         Route::get('authors',Authors::class)->name('ilbullo.books.authors');
         Route::get('categories',Categories::class)->name('ilbullo.books.categories');

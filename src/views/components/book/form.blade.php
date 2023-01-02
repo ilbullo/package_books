@@ -20,10 +20,6 @@
             <div class="modal-body">
                 @include('books::layout.partials.alerts')
                 <form>
-                    @if ($mode ?? '' == 'update')
-                        <input type="hidden" wire:model="form.book_id">
-                    @endif
-
                     <div class="form-group mb-3">
                         <label for="authorName">{{ __('Author') }}</label>
                         <select class="form-select" id="authorName" aria-label="{{ __('Author') }}"
@@ -46,8 +42,8 @@
                             <span class="text-danger error">{{ $message }}</span>
                         @enderror
                     </div>
-
-                    <div class="form-group mb-3">
+                    <p>{{ __('Categories')}}</p>
+                    <div class="form-group mb-3" style="column-count:2;">
                         @foreach ($categories as $category)
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" wire:key="category-{{ $loop->index }}"
@@ -75,6 +71,11 @@
                                 <span class="text-danger error">{{ $message }}</span>
                             @enderror
                         </div>
+                    @endif
+                    <input type="hidden" wire:model="form.filetype">
+
+                    @if ($mode ?? '' == 'update')
+                        <input type="hidden" wire:model="form.book_id">
                     @endif
                 </form>
             </div>

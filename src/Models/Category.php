@@ -16,7 +16,7 @@ class Category extends Model
      *
      * Get all books of the category
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      *
      ***************************************************/
 

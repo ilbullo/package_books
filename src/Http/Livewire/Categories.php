@@ -19,7 +19,7 @@ class Categories extends Component
 
     //form elements
     public $form = [
-        'category_id'       => '',
+        'category_id'     => '',
         'name'            => ''
     ];
 
@@ -143,7 +143,7 @@ class Categories extends Component
             } catch (\Exception $e) {
                 session()->flash('message', $this->messsages['errror']);
                 session()->flash('type', 'danger');
-                Log::error("Errore cancellazione autore: " . $e->getMessage());
+                Log::error("Errore cancellazione categoria: " . $e->getMessage());
             }
         }
     }

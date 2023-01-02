@@ -19,7 +19,7 @@ class Book extends Model
      *
      * Get the author of the book
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      *
      ***************************************************/
 
@@ -33,7 +33,7 @@ class Book extends Model
      *
      * Get the categories of the book
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      *
      ***************************************************/
 

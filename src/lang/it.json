@@ -38,7 +38,9 @@
 "Actions"                       : "Azioni",
 "New book"                      : "Nuovo libro",
 "Load Book"                     : "Carica libro",
+"Update book"                   : "Aggiorna libro",
 "Delete file"                   : "Cancella il link al libro",
 "Book file deleted"             : "Link al libro cancellato correttamente",
-"Edit"                          : "Modifica"
+"Edit"                          : "Modifica",
+"Can't delete file"             : "Eliminazione file non riuscita"
 }
